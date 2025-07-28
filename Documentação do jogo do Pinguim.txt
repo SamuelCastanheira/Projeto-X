@@ -1,0 +1,113 @@
+# Documentação do trabalho 2 de Computação Gráfica.
+
+/*
+ * Nome do Projeto: Jogo do Pinguim
+ * Autores: Samuel Rocha Castanheira e Vicente Lopes de Carvalho
+ * Curso: Ciência da Computação – Computação Gráfica
+ * Professor: Prof. Lis Custódio
+ * Instituição: Universidade Estadual do Rio de Janeiro
+ * Data de Criação: Julho de 2025
+ * Última modificação: 02/07/2025
+ * Descrição: Código responsável pela simulação física das partículas usando OpenGL.
+ */
+
+O trecho inicial do código realiza a inclusão das bibliotecas necessárias para renderização gráfica com OpenGL, manipulação matemática, controle de tempo e carregamento de texturas via stb_image. Em seguida, definimos variáveis globais responsáveis pelo controle da câmera, estados do jogo, movimentação da personagem principal (mãe pinguim), peixes e buracos no cenário. Também configuramos as texturas utilizadas no ambiente e os parâmetros iniciais da iluminação, materiais e profundidade.
+
+
+
+void init()
+Função responsável pela inicialização do ambiente 3D e estado inicial do jogo.
+
+
+
+void desenharPinguim(float x, float z, bool filhote)
+Função responsável por desenhar o pinguim filhote e o pinguim mãe em uma determinada posição (x, z) do cenário.
+O pinguim é composto por primitivas 3D: esferas para o corpo, cabeça, olhos, asas e patas; cone para o bico.
+Quando em movimento, as asas do pinguim adulto se movimentam com base em uma função seno.
+Se o pinguim adulto estiver carregando um peixe, este também é desenhado na parte frontal.
+
+
+
+void desenharPeixe(float x, float z)
+Função responsável por desenhar um peixe em uma determinada posição (x, z) do cenário.
+O peixe é formado por uma esfera texturizada representando o corpo, um cone como cauda e esferas para os olhos.
+A textura aplicada simula escamas, e a função usa quadrics (GLU) para texturização.
+
+
+
+void desenharBuraco(float x, float z)
+Função que desenha um buraco na superfície, utilizado como obstáculo ou elemento interativo.
+O buraco é desenhado como uma esfera achatada, com textura aplicada simulando água.
+Utiliza GLU quadric para aplicar textura na esfera.
+
+
+
+void desenharGelo()
+Função que desenha o chão do ambiente (gelo) como um grande cubo achatado com textura de gelo aplicada.
+As seis faces do cubo são desenhadas manualmente com mapeamento de textura e normais para iluminação.
+
+
+
+void desenharSkybox()
+Função que desenha a skybox (caixa de céu) ao redor da cena, simulando um ambiente fechado com imagens panorâmicas.
+Cada face da skybox (direita, esquerda, frente, trás, topo e base) recebe uma textura diferente para criar imersão visual.
+A escala e rotação da skybox são ajustadas para envolver toda a cena.
+
+
+
+void loadTextures()
+Função responsável por carregar e configurar as 9 texturas utilizadas no jogo, incluindo gelo, água, escama, e as faces da skybox.
+As texturas são carregadas com stb_image, associadas a identificadores OpenGL e configuradas com filtros lineares e mipmaps.
+
+
+
+void jogo()
+Função principal de renderização do jogo. 
+Desenha o skybox, o gelo (chão), os buracos, os peixes e os pinguins (adulto e filhote).
+Controla o posicionamento e visibilidade dos elementos com base nas variáveis de estado do jogo.
+
+
+void display()
+Função de exibição (callback do OpenGL) responsável por renderizar os quatro pontos de vista diferentes do jogo na tela.
+Cada quadrante da janela recebe uma viewport com uma câmera distinta observando a cena.
+Em caso de fim de jogo (gameOver), exibe uma mensagem de "GAME OVER" e finaliza a aplicação.
+
+
+
+void reshape(int w, int h)
+Função de callback para redimensionamento da janela.
+Atualiza a matriz de projeção com perspectiva e redefine o viewport para manter a proporção da tela.
+
+
+
+void keyboardSpecial(int key, int x, int y)
+Função de callback para teclas especiais pressionadas (setas do teclado).
+Ativa os flags de movimento do pinguim para frente, trás e rotações esquerda/direita.
+
+
+
+void keyboardSpecialUp(int key, int x, int y) 
+Função de callback para teclas especiais soltas.
+Desativa os flags de movimento do pinguim quando as teclas de direção são liberadas.
+
+
+
+
+void update(int value)
+Função de atualização do estado do jogo chamada periodicamente (~60 FPS).
+Controla o tempo do jogo, energia do filhote e movimentação do pinguim mãe com base nos flags de entrada.
+Restringe o movimento dentro dos limites do cenário e verifica colisões com buracos, definindo game over.
+Gera e reposiciona peixes aleatoriamente quando necessário.
+Atualiza a dinâmica dos buracos, removendo e adicionando novos a cada 3 segundos.
+Verifica a captura do peixe pela mãe e a entrega do peixe ao filhote para recarregar energia.
+Agenda a próxima chamada de update e solicita redesenho da tela.
+
+
+
+
+int main(int argc, char **argv)
+Função principal que inicializa a janela e o contexto OpenGL/GLUT.
+Configura o modo de exibição, tamanho da janela, e fullscreen.
+Inicializa o estado do jogo e registra callbacks de display, reshape, teclado e timer.
+Carrega as texturas necessárias para o jogo.
+Entra no loop principal do GLUT, iniciando a execução do programa.
