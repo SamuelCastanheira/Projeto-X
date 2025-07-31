@@ -1,3 +1,4 @@
+//Comando de compilaçção g++ 
 // Inclusão de bibliotecas padrão do OpenGL, utilitários de tempo, matemática e carregamento de imagens (stb_image)
 #include <GL/glut.h>
 #include <GL/glext.h>
@@ -6,21 +7,22 @@
 #include <math.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "Pinguim.hpp"
 
 // Identificadores de textura utilizados no cenário e objetos
 int texID[9]; 
 
 // Nomes dos arquivos de textura utilizados para aplicar materiais em objetos e no ambiente
 char* textureFileNames[9] = {   
-    "textura\\gelo.jpg",
-    "textura\\agua.jpg",
-    "textura\\escama.jpg",
-    "textura\\posx.jpg",
-    "textura\\negx.jpg",
-    "textura\\posy.jpg",
-    "textura\\negy.jpg",
-    "textura\\posz.jpg",
-    "textura\\negz.jpg"
+    "..\\textura\\gelo.jpg",
+    "..\\textura\\agua.jpg",
+    "..\\textura\\escama.jpg",
+    "..\\textura\\posx.jpg",
+    "..\\textura\\negx.jpg",
+    "..\\textura\\posy.jpg",
+    "..\\textura\\negy.jpg",
+    "..\\textura\\posz.jpg",
+    "..\\textura\\negz.jpg"
 };
 
 // Variáveis para controle de rotação da câmera ou cenário
@@ -32,11 +34,7 @@ float rotateY = 0;
 #define POSICOES_BURACOS  20
 #define QNT_PEIXES 5
 
-// Posição e orientação da personagem principal (mãe pinguim)
-float maePosX = 3.0f, maePosZ = 3.0f, maeAngle = 0.0f;
-
 // Estados e controles do jogo
-bool temPeixe = false;
 float filhoteEnergia = 60.0f;
 float tempoJogo = 0.0f;
 bool PeixeExiste[QNT_BURACOS];
@@ -50,10 +48,6 @@ bool andandoTras = false;
 bool virandoEsquerda = false;
 bool virandoDireita = false;
 
-// Coordenadas para lógica dos buracos ou movimentação
-int eixoX=0;
-int eixoZ=0;
-
 // Controle de tempo para eventos do jogo
 float tempoDesdeUltimaTrocaBuracos = 0.0f;
 float tempoPeixe = 0.0f;
@@ -61,10 +55,6 @@ bool peixeAtivo = true;
 bool peixeVisivel = true;
 bool gameOver = false;
 int iteradorAza = 0;
-float yMae;
-
-// Declaração antecipada de função que desenha o peixe
-void desenharPeixe(float, float);
 
 // Função responsável pela inicialização do ambiente 3D e estado inicial do jogo
 void init() {
@@ -102,117 +92,6 @@ void init() {
         peixeZ[i] = rand() % 20 - 11;
         PeixeExiste[i] = true;
     }
-}
-
-
-
-
-// Função responsável por desenhar o pinguim filhote e o pinguim mãe em uma determinada posição (x, z) do cenário.
-// O pinguim é composto por primitivas 3D: esferas para o corpo, cabeça, olhos, asas e patas; cone para o bico.
-// Quando em movimento, as asas do pinguim adulto se movimentam com base em uma função seno.
-// Se o pinguim adulto estiver carregando um peixe, este também é desenhado na parte frontal.
-void desenharPinguim(float x, float z, bool filhote) {
-    glPushMatrix();
-    glTranslatef(x, 0.0f, z);
-    if (!filhote) glRotatef(maeAngle, 0, 1, 0);
-
-    float scale = filhote ? 0.7f : 1.0f;
-    glTranslatef(0.0f, 1.4f * scale, 0.0f); // Alinhamento dos pés com Y=0
-
-    glColor3f(0.1f, 0.1f, 0.1f); // Corpo
-    glPushMatrix();
-    glScalef(1.0f * scale, 1.6f * scale, 0.7f * scale);
-    glutSolidSphere(1.0, 40, 40);
-    glPopMatrix();
-
-    glColor3f(0.95f, 0.95f, 0.95f); // Barriga
-    glPushMatrix();
-    glTranslatef(0.0f, -0.2f * scale, 0.65f * scale);
-    glScalef(0.7f * scale, 0.9f * scale, 0.1f * scale);
-    glutSolidSphere(1.0, 40, 40);
-    glPopMatrix();
-
-    glColor3f(0.1f, 0.1f, 0.1f); // Cabeça
-    glPushMatrix();
-    glTranslatef(0.0f, 1.3f * scale, 0.0f);
-    glScalef(0.8f * scale, 0.8f * scale, 0.7f * scale);
-    glutSolidSphere(0.6 * scale, 40, 40);
-    glPopMatrix();
-
-    glColor3f(1.0f, 0.5f, 0.0f); // Bico
-    glPushMatrix();
-    glTranslatef(0.0f, 1.2f * scale, 0.5f * scale);
-    glScalef(1.0f * scale, 1.0f * scale, 1.5f * scale);
-    glutSolidCone(0.12 * scale, 0.3 * scale, 20, 20);
-    glPopMatrix();
-
-    glColor3f(1.0f, 1.0f, 1.0f); // Olhos brancos
-    glPushMatrix();
-    glTranslatef(-0.18f * scale, 1.35f * scale, 0.45f * scale);
-    glScalef(0.1f * scale, 0.1f * scale, 0.1f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(0.18f * scale, 1.35f * scale, 0.45f * scale);
-    glScalef(0.1f * scale, 0.1f * scale, 0.1f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-
-    glColor3f(0.0f, 0.0f, 0.0f); // Pupilas
-    glPushMatrix();
-    glTranslatef(-0.18f * scale, 1.35f * scale, 0.5f * scale);
-    glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(0.18f * scale, 1.35f * scale, 0.5f * scale);
-    glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-
-    glColor3f(0.1f, 0.1f, 0.1f); // Asas
-    glPushMatrix();
-    
-    if (andandoFrente || andandoTras)
-    {
-        yMae = sin(iteradorAza* 0.009)*30;
-        iteradorAza++;
-    }
-
-    glTranslatef(-0.9f * scale, 0.1f * scale , 0.0f);
-    if (!filhote) glRotatef(-yMae, 1, 0, 0);
-    glRotatef(-30, 0, 0, 1);
-    glScalef(0.25f * scale, 1.0f * scale, 0.15f * scale);
-    glutSolidSphere(1.0, 30, 30);
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(0.9f * scale, 0.1f * scale , 0.0f);
-    if (!filhote) glRotatef(yMae, 1, 0, 0);
-    glRotatef(30, 0, 0, 1);
-    glScalef(0.25f * scale, 1.0f * scale, 0.15f * scale);
-    glutSolidSphere(1.0, 30, 30);
-    glPopMatrix();
-
-    glColor3f(1.0f, 0.7f, 0.0f); // Patas
-    glPushMatrix();
-    glTranslatef(-0.35f * scale, -1.4f * scale, 0.2f * scale);
-    glScalef(0.5f * scale, 0.15f * scale, 0.4f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(0.35f * scale, -1.4f * scale, 0.2f * scale);
-    glScalef(0.5f * scale, 0.15f * scale, 0.4f * scale);
-    glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-
-    if (temPeixe && !filhote) {
-        glPushMatrix();
-        glTranslatef(0.0f, 1.7f * scale, 1.2f * scale);
-        glRotatef(90,0,1,0);
-        desenharPeixe(0,0);
-        glPopMatrix();
-    }
-    glPopMatrix();
 }
 
 // Função responsável por desenhar um peixe em uma determinada posição (x, z) do cenário.
@@ -521,30 +400,6 @@ void display() {
     int h = glutGet(GLUT_WINDOW_HEIGHT);
     glMatrixMode(GL_MODELVIEW);
 
-    glViewport(w/2,h/2, w/2, h/2);
-    glLoadIdentity();
-    gluLookAt(0.0, 15.0, 0.0,
-             maePosX, 0.0, maePosZ,
-            0.0, 0.0, 1.0);
-            
-    jogo();
-
-    glViewport(w/2, 0, w/2, h/2);
-    glLoadIdentity();
-    gluLookAt(0.0, 2.0, 15,  
-              maePosX, 0.0, maePosZ,
-              0.0, 1.0, 0.0);
-    jogo();
-
-    glViewport(0, h/2, w/2, h/2);
-    glLoadIdentity();
-    gluLookAt(3.0, 5.0, 10.0,  
-              maePosX, 0.0, maePosZ,
-              0.0, 1.0, 0.0);
-    jogo();
-
-
-    glViewport(0, 0, w/2, h/2);
     glLoadIdentity();
  
     gluLookAt(-10, 5.0, 0.0,  
