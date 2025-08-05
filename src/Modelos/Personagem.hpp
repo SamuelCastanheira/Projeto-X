@@ -1,7 +1,7 @@
 #pragma once
+#include "../interface/ElementoDocenario.hpp"
 
-
-	class Personagem
+	class Personagem : ElementoDoCenario
 	{
 	public:
 		~Personagem() = default;

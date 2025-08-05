@@ -10,10 +10,10 @@ protected:
 	void Olhos();
 	void Asas();
 	void Peixe();
+	ElementoEnum tipo = ElementoEnum::PINGUIM;
 
 	
 public:
-	
 	float posicaoX;
 	float posicaoY;
 	float posicaoZ; 
@@ -29,6 +29,7 @@ public:
 	bool virandoEsquerda;
 	bool virandoDireita;
 
+	Pinguim(float x, float z, float scale);
 	Pinguim(float x, float z);
 	void Desenhar() override;
 	void HitBox() override;
@@ -46,5 +47,6 @@ public:
     bool RetornaAndandoTras() const;
     bool RetornaVirandoEsquerda() const;
     bool RetornaVirandoDireita() const;
+	ElementoEnum getTipo();
 	
 };

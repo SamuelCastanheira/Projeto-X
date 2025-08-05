@@ -5,6 +5,18 @@
 
 extern int iteradorAza;
 
+Pinguim::Pinguim(float x, float z, float scale)
+{
+    this->posicaoX = x;
+    this->posicaoY = 0;
+    this->posicaoZ = z;
+    this->angle = 0;
+    this->scale = scale;
+    this->capturouPeixe = false;
+    this->velocidade = 0.16f;
+    this->rotacaoVel = 2.5f;
+}
+
 Pinguim::Pinguim(float x, float z)
 {
     this->posicaoX = x;
@@ -17,16 +29,7 @@ Pinguim::Pinguim(float x, float z)
     this->rotacaoVel = 2.5f;
 }
 
-bool Pinguim::RetornaCapturouPeixe()
-{
-    return this->capturouPeixe;
-}
-
-void Pinguim::RecebeCapturouPeixe(bool captura)
-{
-    this->capturouPeixe = captura ;
-}
-
+//Definições Geométricas
 void Pinguim::Patas() 
 {
     glColor3f(1.0f, 0.7f, 0.0f); // Patas
@@ -98,12 +101,13 @@ void Pinguim::Olhos()
 
     glColor3f(0.0f, 0.0f, 0.0f); // Pupilas
     glPushMatrix();
-    glTranslatef(-0.18f * scale, 1.35f * scale, 0.5f * scale);
+    glTranslatef(-0.18f * scale, 1.35f * scale, 0.52f * scale);
     glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
     glutSolidSphere(1.0, 20, 20);
     glPopMatrix();
+    
     glPushMatrix();
-    glTranslatef(0.18f * scale, 1.35f * scale, 0.5f * scale);
+    glTranslatef(0.18f * scale, 1.35f * scale, 0.52f * scale);
     glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
     glutSolidSphere(1.0, 20, 20);
     glPopMatrix();
@@ -173,6 +177,7 @@ void Pinguim::HitBox()
     glPopMatrix();
 }
 
+//Setters
 void Pinguim::RecebeAndandoFrente(bool valor) {
     andandoFrente = valor;
 }
@@ -187,6 +192,11 @@ void Pinguim::RecebeVirandoEsquerda(bool valor) {
 
 void Pinguim::RecebeVirandoDireita(bool valor) {
     virandoDireita = valor;
+}
+
+void Pinguim::RecebeCapturouPeixe(bool captura)
+{
+    this->capturouPeixe = captura ;
 }
 
 // Getters
@@ -204,4 +214,14 @@ bool Pinguim::RetornaVirandoEsquerda() const {
 
 bool Pinguim::RetornaVirandoDireita() const {
     return virandoDireita;
+}
+
+bool Pinguim::RetornaCapturouPeixe()
+{
+    return this->capturouPeixe;
+}
+
+ElementoEnum Pinguim::getTipo()
+{
+    return this->tipo;
 }

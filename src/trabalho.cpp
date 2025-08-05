@@ -94,6 +94,117 @@ void init() {
     }
 }
 
+
+
+
+// Função responsável por desenhar o pinguim filhote e o pinguim mãe em uma determinada posição (x, z) do cenário.
+// O pinguim é composto por primitivas 3D: esferas para o corpo, cabeça, olhos, asas e patas; cone para o bico.
+// Quando em movimento, as asas do pinguim adulto se movimentam com base em uma função seno.
+// Se o pinguim adulto estiver carregando um peixe, este também é desenhado na parte frontal.
+void desenharPinguim(float x, float z, bool filhote) {
+    glPushMatrix();
+    glTranslatef(x, 0.0f, z);
+    if (!filhote) glRotatef(maeAngle, 0, 1, 0);
+
+    float scale = filhote ? 0.7f : 1.0f;
+    glTranslatef(0.0f, 1.4f * scale, 0.0f); // Alinhamento dos pés com Y=0
+
+    glColor3f(0.1f, 0.1f, 0.1f); // Corpo
+    glPushMatrix();
+    glScalef(1.0f * scale, 1.6f * scale, 0.7f * scale);
+    glutSolidSphere(1.0, 40, 40);
+    glPopMatrix();
+
+    glColor3f(0.95f, 0.95f, 0.95f); // Barriga
+    glPushMatrix();
+    glTranslatef(0.0f, -0.2f * scale, 0.65f * scale);
+    glScalef(0.7f * scale, 0.9f * scale, 0.1f * scale);
+    glutSolidSphere(1.0, 40, 40);
+    glPopMatrix();
+
+    glColor3f(0.1f, 0.1f, 0.1f); // Cabeça
+    glPushMatrix();
+    glTranslatef(0.0f, 1.3f * scale, 0.0f);
+    glScalef(0.8f * scale, 0.8f * scale, 0.7f * scale);
+    glutSolidSphere(0.6 * scale, 40, 40);
+    glPopMatrix();
+
+    glColor3f(1.0f, 0.5f, 0.0f); // Bico
+    glPushMatrix();
+    glTranslatef(0.0f, 1.2f * scale, 0.5f * scale);
+    glScalef(1.0f * scale, 1.0f * scale, 1.5f * scale);
+    glutSolidCone(0.12 * scale, 0.3 * scale, 20, 20);
+    glPopMatrix();
+
+    glColor3f(1.0f, 1.0f, 1.0f); // Olhos brancos
+    glPushMatrix();
+    glTranslatef(-0.18f * scale, 1.35f * scale, 0.45f * scale);
+    glScalef(0.1f * scale, 0.1f * scale, 0.1f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.18f * scale, 1.35f * scale, 0.45f * scale);
+    glScalef(0.1f * scale, 0.1f * scale, 0.1f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+
+    glColor3f(0.0f, 0.0f, 0.0f); // Pupilas
+    glPushMatrix();
+    glTranslatef(-0.18f * scale, 1.35f * scale, 0.5f * scale);
+    glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.18f * scale, 1.35f * scale, 0.5f * scale);
+    glScalef(0.04f * scale, 0.04f * scale, 0.04f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+
+    glColor3f(0.1f, 0.1f, 0.1f); // Asas
+    glPushMatrix();
+    
+    if (andandoFrente || andandoTras)
+    {
+        yMae = sin(iteradorAza* 0.009)*30;
+        iteradorAza++;
+    }
+
+    glTranslatef(-0.9f * scale, 0.1f * scale , 0.0f);
+    if (!filhote) glRotatef(-yMae, 1, 0, 0);
+    glRotatef(-30, 0, 0, 1);
+    glScalef(0.25f * scale, 1.0f * scale, 0.15f * scale);
+    glutSolidSphere(1.0, 30, 30);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.9f * scale, 0.1f * scale , 0.0f);
+    if (!filhote) glRotatef(yMae, 1, 0, 0);
+    glRotatef(30, 0, 0, 1);
+    glScalef(0.25f * scale, 1.0f * scale, 0.15f * scale);
+    glutSolidSphere(1.0, 30, 30);
+    glPopMatrix();
+
+    glColor3f(1.0f, 0.7f, 0.0f); // Patas
+    glPushMatrix();
+    glTranslatef(-0.35f * scale, -1.4f * scale, 0.2f * scale);
+    glScalef(0.5f * scale, 0.15f * scale, 0.4f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.35f * scale, -1.4f * scale, 0.2f * scale);
+    glScalef(0.5f * scale, 0.15f * scale, 0.4f * scale);
+    glutSolidSphere(1.0, 20, 20);
+    glPopMatrix();
+
+    if (temPeixe && !filhote) {
+        glPushMatrix();
+        glTranslatef(0.0f, 1.7f * scale, 1.2f * scale);
+        glRotatef(90,0,1,0);
+        desenharPeixe(0,0);
+        glPopMatrix();
+    }
+    glPopMatrix();
+}
+
 // Função responsável por desenhar um peixe em uma determinada posição (x, z) do cenário.
 // O peixe é formado por uma esfera texturizada representando o corpo, um cone como cauda e esferas para os olhos.
 // A textura aplicada simula escamas, e a função usa quadrics (GLU) para texturização.

@@ -10,10 +10,11 @@
 #include "stb_image.h"
 #include "Modelos/Pinguim.hpp"
 
-Pinguim mae(0,0);
+Pinguim filhote(0,0,0.7);
+Pinguim mae(3,3);
 // Identificadores de textura utilizados no cenário e objetos
 int texID[9]; 
-int iteradorAza =0;
+int iteradorAza = 0;
 
 void desenharGelo() {
     glColor3f(1.0f, 1.0f, 1.0f);
@@ -122,7 +123,14 @@ void display() {
               mae.posicaoX, 0.0, mae.posicaoZ,
               0.0, 1.0, 0.0);
 
+    glPushMatrix();
+            
+            filhote.Desenhar();
+            filhote.HitBox();
+    glPopMatrix();
+
      glPushMatrix();
+            
             mae.Desenhar();
             mae.HitBox();
     glPopMatrix();
