@@ -5,7 +5,8 @@
 #include <time.h>
 #include <math.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"  // <-- A referencia seria do src/stb_image.h ? então talvez devesse ser src/stb_image.h
+#include "stb_image.h"  // <-- A referencia deveria ser "src/stb_image.h" ?
+
 
 // Identificadores de textura utilizados no cenário e objetos
 int texID[9]; 
