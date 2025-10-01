@@ -13,7 +13,7 @@ Os demais participantes citados abaixo são responsáveis por tornar o jogo mult
 
 **Bases de rede**
 
-Por questões de conveniencia a rede do projeto será implementada com o uso da biblioteca Boost.Asio, pois com ela evitamos descrever as premissas de redes para mais de uma plataforma (LINUX/WINDONS)
+Por questões de conveniencia a rede do projeto será implementada com o uso da biblioteca Boost.Asio, pois com ela evitamos descrever as premissas de redes para mais de uma plataforma (LINUX/WINDOWS)
 
 ***Versionamento :***
 > 0.1: Inclusões de cabeçalhos e corpo básico da função iniciar
