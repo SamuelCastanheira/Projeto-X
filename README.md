@@ -11,6 +11,22 @@ Os demais participantes citados abaixo são responsáveis por tornar o jogo mult
 >
 >Henrique Oliveira
 
+**Instruções de compilação**
+
+>Use o gerenciador de dependencias Conan, ele vai facilitar muito sua vida.
+>
+>Defina um perfil com o comando abaixo:
+> >conan profile detect
+>
+>Instale a biblioteca boos com o comando abaixo:
+>>conan install .. --build=missing -s compiler=gcc -s compiler.version=15 -s compiler.libcxx=libstdc++11 -s arch=x86 -s os=Windows
+>
+>Execute o cmake:
+cmake .. -G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
+>
+>Construa o projeto:
+>cmake --build .
+
 **Bases de rede**
 
 Por questões de conveniencia a rede do projeto será implementada com o uso da biblioteca Boost.Asio, pois com ela evitamos descrever as premissas de redes para mais de uma plataforma (LINUX/WINDOWS)
