@@ -12,7 +12,7 @@
 int texID[9]; 
 
 // Nomes dos arquivos de textura utilizados para aplicar materiais em objetos e no ambiente
-char* textureFileNames[9] = {   
+const char* textureFileNames[9] = {   
     "textura\\gelo.jpg",
     "textura\\agua.jpg",
     "textura\\escama.jpg",
