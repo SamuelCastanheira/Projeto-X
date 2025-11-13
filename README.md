@@ -17,7 +17,7 @@ Este projeto é desenvolvido e compilado usando o ambiente **MSYS2** no Windows.
     * Vá para [msys2.org](https://www.msys2.org/) e faça a instalação.
 
 2.  **Abra o terminal MSYS2 MINGW64:**
-    * No Menu Iniciar, abra o terminal `MSYS2 MINGW64` (o de ícone roxo 💜).
+    * No Menu Iniciar, abra o terminal `MSYS2 MINGW64` (o de ícone roxo).
 
 3.  **Instale as Ferramentas (Compilador, Boost, CMake):**
     * Dentro do terminal MINGW64, rode o seguinte comando para instalar tudo:
