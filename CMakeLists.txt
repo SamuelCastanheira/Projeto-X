@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 4.1.1)
 
-project(PROJETO-X LANGUAGES C++)
+project(PROJETO-X LANGUAGES CXX)
 
 # Adiciona flags para linkagem estática do runtime do GCC
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
