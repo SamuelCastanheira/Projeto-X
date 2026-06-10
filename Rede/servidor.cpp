@@ -5,12 +5,12 @@
 #include <boost/asio.hpp>
 
 /*
-    Tentativa de implementação de servidor UDP. Nosso servidor é experimental e foi concebido depois de conversa com um amigo,
+    Tentativa de implementação de servidor TCP. Nosso servidor é experimental e foi concebido depois de conversa com um amigo,
     portanto possívelmente haverá muitas modificações.
 */
 
-constexpr int PORTA = 4040 // Depois vejo qual será a porta correta
-constexpr int BUFFER_SIZE = 1024
+constexpr int PORTA = 4040; // Depois vejo qual será a porta correta
+constexpr int BUFFER_SIZE = 1024;
 
 int conexaoplayer(){
     /*Conecta e gerenciar os clientes em cada uma das threads */
@@ -36,14 +36,15 @@ int conexaoplayer(){
         Problema 5: Não sei ainda vamos ver...
 
     */
+   return 0;
 }
 
-int iniciar(){
+void iniciar(){
     /*Inicia o servidor do jogo*/
     try
     {
         boost::asio::io_context io_context;
-        boost::asio::ip::udp::socket socket(io_context, udp::endpoint(udp::v4(), PORTA));
+        boost::asio::ip::udp::socket socket(io_context, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), PORTA));
         std::cout << "Servidor pronto e disponivel na porta: " << PORTA  << "\n";
 
         while(true){
@@ -63,3 +64,7 @@ int iniciar(){
     }
 }
 
+int main(){
+    std::cout << "brinquedo";
+    return 0;
+}
